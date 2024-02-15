@@ -950,7 +950,7 @@ namespace SimConnect2Matric2
             string output = "";
 
             formatType = uniqueFormats.Any(format => rowDataItem.Contains(format)) ? "unique" : EnumToString(Convert.ToInt32(tableRow["MatricType"]), typeof(MatricDataTypes));
-            formatType = enumFormats.Any(format => rowDataItem.Contains(format)) ? "enum" : EnumToString(Convert.ToInt32(tableRow["MatricType"]), typeof(MatricDataTypes));
+            formatType = enumFormats.Any(format => rowDataItem.Contains(format)) ? "enum" : formatType;
 
             switch (formatType)
             {
