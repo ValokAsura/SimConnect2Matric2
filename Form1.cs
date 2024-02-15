@@ -43,16 +43,6 @@ public enum MatricDataTypes
     button
 }
 
-public enum TransponderState
-{
-    Off,
-    Standby,
-    Test,
-    On,
-    Alt,
-    Ground
-}
-
 enum DEFINITIONS
 {
     SimConnectData,
@@ -646,6 +636,7 @@ namespace SimConnect2Matric2
             e.ThrowException = false;
         }
 
+        /*
         public string EnumToString(int enumIndex, Type enumType)
         {
             // Check if the provided type is an enum
@@ -665,6 +656,27 @@ namespace SimConnect2Matric2
             string enumString = enumNames[enumIndex];
 
             return enumString;
+        }
+        */
+        public string EnumToString(object lineNum, Type enumName)
+        // Testing a different EnumToString to make it simpler to send data to it.
+        // No need to convert anything before-hand, and requires changes to be made in the function instead of individual for each call
+        {
+            if (!enumName.IsEnum)
+            {
+                Debug.WriteLine("Type provided is not an enum");
+                return "err1";
+            }
+
+            int enumRow = Convert.ToInt32(Math.Round(Convert.ToDouble(lineNum)));
+
+            if (enumRow < 0 || enumRow >= Enum.GetNames(enumName).Length)
+            {
+                Debug.WriteLine("Enum index is out of range");
+                return "err2";
+            }
+
+            return Enum.GetNames(enumName)[enumRow];
         }
 
         public string ObjToDataType(object myObj)
@@ -916,65 +928,53 @@ namespace SimConnect2Matric2
             }
         }
 
-        string FormatData(object input,DataRow tableRow)
+        string FormatData(object input, DataRow tableRow)
         {
-            string formatType = EnumToString(Convert.ToInt32(tableRow["MatricType"]),typeof(MatricDataTypes));
             string rowDataItem = tableRow["DataItem"].ToString();
+            string formatType = uniqueFormats.Any(format => rowDataItem.Contains(format)) ? "unique" : EnumToString(Convert.ToInt32(tableRow["MatricType"]), typeof(MatricDataTypes));
 
-            //Console.WriteLine("Formatting: "+input.ToString()+" into the format "+formatType);
-            string output="";
-            bool uoutput = false;
-            double _input = Convert.ToDouble(input);
-
-            //if simvar name is in the unique format array then send it down the switch default
-            uoutput = uniqueFormats.Any(format => rowDataItem.Contains(format));
-
-            formatType = uoutput ? "unique" : formatType;
-            
             switch (formatType)
             {
                 case "output_decimal":
-                    output = $"{Math.Round(_input,2)}";
-                    break;
-
+                    return $"{Math.Round(Convert.ToDouble(input), 2)}";
                 case "output_number":
-                    
-                    output = $"{Math.Round(_input)}";
-                    break;
-
+                    return $"{Convert.ToInt32(input)}";
                 case "output_heading":
-                    output = $"{Rad2deg(_input):F0}";
-                    break;
-
+                    return $"{Rad2deg(Convert.ToDouble(input)):F0}";
                 case "output_transponder":
-                    output = _input.ToString().PadLeft(3, '0');
-                    break;
-
+                    return Convert.ToString(input).PadLeft(3, '0');
                 case "output_frequency":
-                    string inputstring = _input.ToString();
-                    output = inputstring;
-                    output = inputstring != "0" ? $"{inputstring.Substring(0, 3)}.{inputstring.Substring(3, 3)}" : null;
-                    break;
-
+                    return Convert.ToString(input) != "0" ? (Convert.ToDouble(input) / 1000000).ToString("000.000") : null;
                 case "button":
-                    output = Math.Round(_input) == 1 ? "true" : "false";
-                    break;
+                    return Math.Round(Convert.ToDouble(input)) == 1 ? "true" : "false";
+                case "unique":
+                    string output = "";
 
-                default:
-                    //now we'll handle formatType based on unique cases by looking at the SimVar name
-                    switch(rowDataItem)
+                    switch (rowDataItem)
                     {
-                        case string s when s.Contains("AUTOPILOT VERTICAL HOLD VAR"):
-                            output = Convert.ToString(Math.Round(_input / 1.66) * 100);
-                            break;
+                        case "AUTOPILOT VERTICAL HOLD VAR":
+                            return Convert.ToString(Math.Round(Convert.ToDouble(input) / 1.66) * 100);
                         case string s when s.Contains("TRANSPONDER STATE"):
-                            output = EnumToString(Convert.ToInt32(Math.Round(_input)), typeof(TransponderState));
-                            break;
+                            return EnumToString(input, typeof(TransponderState));
+                        case string s when s.Contains("NAV TOFROM"):
+                            return EnumToString(input, typeof(NavToFrom));
+                        case string s when s.Contains("COM SPACING MODE"):
+                            output = EnumToString(input, typeof(ComSpacingMode));
+                            return output == "TwentyFiveKilohertz" ? "25kHz" : "8.33kHz";
+                        case string s when s.Contains("CRASH FLAG"):
+                            output = EnumToString(input, typeof(CrashFlag));
+                            return output == "Building2" ? "Building" : output;
+                        case string s when s.Contains("GPS APPROACH APPROACH TYPE"):
+                            output = EnumToString(input, typeof(GpsApproachApproachType));
+                            output = output == "VOR_DME" ? "VOR/DME" : output;
+                            output = output == "NDB_DME" ? "NDB/DME" : output;
+                            return output;
                     }
-                    break;
+
+                    return "ReqUnique";
             }
-            Console.WriteLine($"{rowDataItem}:{formatType}:{output}");
-            return output;
+
+            return "";
         }
 
         static double Deg2rad(double deg)
@@ -1069,4 +1069,626 @@ namespace SimConnect2Matric2
             System.Diagnostics.Process.Start("https://www.paypal.com/donate/?business=PGG4UGGB7V6SL&no_recurring=0&item_name=Donate+so+that+Lando+may+have+all+the+biscuits+his+heart+desires.&currency_code=GBP");
         }
     }
+}
+
+public enum AutopilotDefaultPitchMode // [AUTOPILOT DEFAULT PITCH MODE]
+{
+    None,
+    Pitch,
+    Altitude_Hold, // Altitude Hold
+    Vertical_Speed // Vertical Speed
+}
+
+public enum AutopilotDefaultRollMode // [AUTOPILOT DEFAULT ROLL MODE]
+{
+    None,
+    Wing_Leveler, // Wing Leveler
+    Heading,
+    Roll_Hold // Roll Hold
+}
+
+public enum AiAntistallState // [AI ANTISTALL STATE]
+{
+    Active,
+    Stabilizing,
+    Inactive
+}
+
+public enum FlyAssistantNearestCategory // [FLY ASSISTANT NEAREST CATEGORY]
+{
+    Airport,
+    Cities,
+    Landmark,
+    Fauna
+}
+
+public enum GearPosition // :index, [GEAR POSITION]
+{
+    unknown,
+    up,
+    down
+}
+
+public enum GearWarning // :index, [GEAR WARNING]
+{
+    None,
+    Gear_Up, // Gear Up
+    Amphibious_Gear_Up, // Amphibious Gear Up
+    Amphibious_Gear_Down, // Amphibious Gear Down
+    On_Ground_Handle_Up // On Ground Handle Up
+}
+
+public enum RetractFloatSwitch // [RETRACT FLOAT SWITCH]
+{
+    Retracted,
+    Neutral,
+    Extended
+}
+
+public enum BleedAirSourceControl // :index, [BLEED AIR SOURCE CONTROL]
+{
+    auto,
+    off,
+    apu,
+    engines
+}
+
+public enum EngineType // [ENGINE TYPE]
+{
+    Piston,
+    Jet,
+    None,
+    Helo_Bell_turbine, // Helo(Bell) turbine
+    Unsupported,
+    Turboprop
+}
+
+public enum TurbEngConditionLeverPosition // :index, [TURB ENG CONDITION LEVER POSITION]
+{
+    fuel_cut_off, // fuel cut-off
+    low_idle, // low idle
+    high_idle // high idle
+}
+
+public enum TurbEngIgnitionSwitchEx1 // :index, [TURB ENG IGNITION SWITCH EX1]
+{
+    OFF,
+    AUTO,
+    ON
+}
+
+public enum TurbEngTankSelector // :index, [TURB ENG TANK SELECTOR]
+{
+    Off,
+    All,
+    Left,
+    Right,
+    Left_auxiliary, // Left auxiliary
+    Right_auxiliary, // Right auxiliary
+    Center,
+    Center2,
+    Center3,
+    External1,
+    External2,
+    Right_tip, // Right tip
+    Left_tip, // Left tip
+    Crossfeed,
+    Crossfeed_left_to_right, // Crossfeed left to right
+    Crossfeed_right_to_left, // Crossfeed right to left
+    Both,
+    External,
+    Isolate,
+    Left_main, // Left main
+    Right_main // Right main
+}
+
+public enum RecipEngFuelTankSelector // :index, [RECIP ENG FUEL TANK SELECTOR]
+{
+    Off,
+    All,
+    Left,
+    Right,
+    Left_auxiliary, // Left auxiliary
+    Right_auxiliary, // Right auxiliary
+    Center,
+    Center2,
+    Center3,
+    External1,
+    External2,
+    Right_tip, // Right tip
+    Left_tip, // Left tip
+    Crossfeed,
+    Crossfeed_left_to_right, // Crossfeed left to right
+    Crossfeed_right_to_left, // Crossfeed right to left
+    Both,
+    External,
+    Isolate,
+    Left_main, // Left main
+    Right_main // Right main
+}
+
+public enum GLimiterSetting // [G LIMITER SETTING]
+{
+    Off,
+    On,
+    Override
+}
+
+public enum InteractivePointType // [INTERACTIVE POINT TYPE]
+{
+    Main_exit, // Main exit
+    Cargo_exit, // Cargo exit
+    Emergency_exit, // Emergency exit
+    Fuel_hose, // Fuel hose
+    Ground_Power_cable, // Ground Power cable
+    Unknown
+}
+
+public enum FuelCrossFeed // :index, [FUEL CROSS FEED]
+{
+    Closed,
+    Open,
+    Left_to_Right, // Left to Right
+    Right_to_Left // Right to Left
+}
+
+public enum FuelSelectedTransferMode // [FUEL SELECTED TRANSFER MODE]
+{
+    off,
+    auto,
+    forward,
+    aft,
+    manual,
+    custom
+}
+
+public enum FuelTankSelector // :index, [FUEL TANK SELECTOR]
+{
+    Off,
+    All,
+    Left,
+    Right,
+    Left_auxiliary, // Left auxiliary
+    Right_auxiliary, // Right auxiliary
+    Center,
+    Center2,
+    Center3,
+    External1,
+    External2,
+    Right_tip, // Right tip
+    Left_tip, // Left tip
+    Crossfeed,
+    Crossfeed_left_to_right, // Crossfeed left to right
+    Crossfeed_right_to_left, // Crossfeed right to left
+    Both,
+    External,
+    Isolate,
+    Left_main, // Left main
+    Right_main // Right main
+}
+
+public enum SurfaceCondition // [SURFACE CONDITION]
+{
+    Normal,
+    Wet,
+    Icy,
+    Snow
+}
+
+public enum SurfaceType // [SURFACE TYPE]
+{
+    Concrete,
+    Grass,
+    Water,
+    Grass_bumpy,
+    Asphalt,
+    Short_grass,
+    Long_grass,
+    Hard_turf,
+    Snow,
+    Ice,
+    Urban,
+    Forest,
+    Dirt,
+    Coral,
+    Gravel,
+    Oil_treated,
+    Steel_mats,
+    Bituminus,
+    Brick,
+    Macadam,
+    Planks,
+    Sand,
+    Shale,
+    Tarmac,
+    Wright_flyer_track // Wright flyer track
+}
+
+public enum ComSpacingMode // :index, [COM SPACING MODE]
+{
+    TwentyFiveKilohertz, // 25kHz
+    EightPointThreeThreeKilohertz // 8.33kHz
+}
+
+public enum ComStatus // :index, [COM STATUS]
+{
+    Invalid,
+    OK,
+    Does_not_exist, // Does not exist
+    No_electricity, // No electricity
+    Failed
+}
+
+public enum GpsApproachApproachType // [GPS APPROACH APPROACH TYPE]
+{
+    None,
+    GPS,
+    VOR,
+    NDB,
+    ILS,
+    Localizer,
+    SDF,
+    LDA,
+    VOR_DME, // VOR/ DME
+    NDB_DME, // NDB/ DME
+    RNAV,
+    Backcourse
+}
+
+public enum GpsApproachMode // [GPS APPROACH MODE]
+{
+    None,
+    Transition,
+    Final,
+    Missed
+}
+
+public enum GpsApproachSegmentType // [GPS APPROACH SEGMENT TYPE]
+{
+    Line,
+    Arc_clockwise, // Arc clockwise
+    Arc_counter_clockwise // Arc counter-clockwise
+}
+
+public enum GpsApproachWpType // [GPS APPROACH WP TYPE]
+{
+    None,
+    Fix,
+    Procedure_turn_left, // Procedure turn left
+    Procedure_turn_right, // Procedure turn right
+    Dme_arc_left, // Dme arc left
+    Dme_arc_right, // Dme arc right
+    Holding_left, // Holding left
+    Holding_right, // Holding right
+    Distance,
+    Altitude,
+    Manual_sequence, // Manual sequence
+    Vector_to_final // Vector to final
+}
+
+public enum HsiTfFlags // [HSI TF FLAGS]
+{
+    Off,
+    TO,
+    FROM
+}
+
+public enum MarkerBeaconState // [MARKER BEACON STATE]
+{
+    None,
+    Outer,
+    Middle,
+    Inner
+}
+
+public enum NavToFrom // [NAV TOFROM]
+{
+    Off,
+    TO,
+    FROM
+}
+
+public enum TacanStationTofrom // :index, [TACAN STATION TOFROM]
+{
+    Off,
+    TO,
+    FROM
+}
+
+public enum CopilotTransmitterType // [COPILOT TRANSMITTER TYPE]
+{
+    COM1,
+    COM2,
+    COM3,
+    TEL,
+    NONE
+}
+
+public enum PilotTransmitterType // [PILOT TRANSMITTER TYPE]
+{
+    COM1,
+    COM2,
+    COM3,
+    TEL,
+    NONE
+}
+
+public enum TransponderState // [TRANSPONDER STATE]
+{
+    Off,
+    Standby,
+    Test,
+    On,
+    Alt,
+    Ground
+}
+
+public enum IntercomMode // [INTERCOM MODE]
+{
+    ISO,
+    ALL,
+    CREW
+}
+
+public enum PitotHeatSwitch // :index, [PITOT HEAT SWITCH]
+{
+    Off,
+    On,
+    Auto
+}
+
+public enum PartialPanelAdf // [PARTIAL PANEL ADF]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelAirspeed // [PARTIAL PANEL AIRSPEED]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelAltimeter // [PARTIAL PANEL ALTIMETER]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelAttitude // [PARTIAL PANEL ATTITUDE]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelAvionics // [PARTIAL PANEL AVIONICS]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelComm // [PARTIAL PANEL COMM]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelCompass // [PARTIAL PANEL COMPASS]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelElectrical // [PARTIAL PANEL ELECTRICAL]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelEngine // [PARTIAL PANEL ENGINE]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelFuelIndicator // [PARTIAL PANEL FUEL INDICATOR]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelHeading // [PARTIAL PANEL HEADING]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelNav // [PARTIAL PANEL NAV]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelPitot // [PARTIAL PANEL PITOT]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelTransponder // [PARTIAL PANEL TRANSPONDER]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelTurnCoordinator // [PARTIAL PANEL TURN COORDINATOR]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelVacuum // [PARTIAL PANEL VACUUM]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum PartialPanelVerticalVelocity // [PARTIAL PANEL VERTICAL VELOCITY]
+{
+    ok,
+    fail,
+    blank
+}
+
+public enum CameraRequestAction // [CAMERA REQUEST ACTION]
+{
+    Reset_Active_Camera // Reset Active Camera
+}
+
+public enum CameraState // [CAMERA STATE]
+{
+    Cockpit,
+    External_Chase, // External/Chase
+    Drone,
+    Fixed_on_Plane, // Fixed on Plane
+    Environment,
+    Six_DoF, // Six DoF
+    Gameplay,
+    Showcase,
+    Drone_Aircraft, // Drone Aircraft
+    Waiting,
+    World_Map, // World Map
+    Hangar_RTC, // Hangar RTC
+    Hangar_Custom, // Hangar Custom
+    Menu_RTC, // Menu RTC
+    In_Game_RTC, // In-Game RTC
+    Replay,
+    Drone_Top_Down, // Drone Top-Down
+    Hangar,
+    Ground,
+    Follow_Traffic_Aircraft // Follow Traffic Aircraft
+}
+
+public enum CameraSubstate // [CAMERA SUBSTATE]
+{
+    Locked,
+    Unlocked,
+    Quickview,
+    Smart,
+    Instrument
+}
+
+public enum CameraViewTypeAndIndex // :index, [CAMERA VIEW TYPE AND INDEX] WARNING! This one might be weird. https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Camera_Variables.htm#CAMERA_VIEW_TYPE_AND_INDEX
+{
+    Unknown_default, // Unknown/default
+    Pilot_View, // Pilot View
+    Instruments,
+    Quickview,
+    Quickview_External, // Quickview External
+    View
+}
+
+public enum GameplayCameraFocus // [GAMEPLAY CAMERA FOCUS]
+{
+    Auto,
+    Manual
+}
+
+public enum ChaseCameraHeadlook // [CHASE CAMERA HEADLOOK]
+{
+    Freelook,
+    Headlook
+}
+
+public enum CockpitCameraHeadlook // [COCKPIT CAMERA HEADLOOK]
+{
+    Freelook,
+    Headlook
+}
+
+public enum DroneCameraFocusMode // [DRONE CAMERA FOCUS MODE]
+{
+    Deactivated,
+    Auto,
+    Manual
+}
+
+public enum SmartCameraList // :index, [SMART CAMERA LIST]
+{
+    unknown_POI, // unknown POI
+    Follow_POI, // Follow POI
+    User_POI, // User POI
+    General_POI, // General POI
+    End_OF_Runway, // End OF Runway
+    Landing_Runway, // Landing Runway
+    Flightpath,
+    Object_Interaction, // Object Interaction
+    Multiplayer_OOI, // Multiplayer OOI
+    Active_Runway, // Active Runway
+    Waypoint,
+    Airport_OOI, // Airport OOI
+    Flight_Assistant_Destination // Flight Assistant Destination
+}
+
+public enum CrashFlag // [CRASH FLAG] WARNING! Building is in this enum twice, Possibly Goofy Enum https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Miscellaneous_Variables.htm#CRASH%20FLAG
+{
+    None,
+    Mountain,
+    General,
+    Building,
+    Splash,
+    Gear_up, // Gear up
+    Overstress,
+    Building2, // Building
+    Aircraft,
+    Fuel_Truck // Fuel Truck
+}
+
+public enum CrashSequence // [CRASH SEQUENCE] WARNING! Possibly Goofy Enum https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Miscellaneous_Variables.htm#CRASH%20SEQUENCE
+{
+    off,
+    complete,
+    reset,
+    pause,
+    start
+}
+
+public enum HandAnimState // [HAND ANIM STATE]
+{
+    Hover,
+    Index_push_Point, // Index push/Point
+    Pinch_large, // Pinch large
+    Pinch_medium, // Pinch medium
+    Pinch_small, // Pinch small
+    Pinch_lateral, // Pinch lateral
+    Press_all_Fist, // Press all/Fist
+    Toggle_lever_up_down, // Toggle lever up/down
+    Thumb_push, // Thumb push
+    Holde_yoke_thin, // Holde yoke thin
+    Hold_throttle, // Hold throttle
+    Hold_yokes, // Hold yokes
+    Push_pull_lever // Push/pull lever
+}
+
+public enum PushbackState // :index, [PUSHBACK STATE]
+{
+    Straight,
+    Left,
+    Right
 }

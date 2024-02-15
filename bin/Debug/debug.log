@@ -1,53 +1,3 @@
-22:34:15 - GROUND VELOCITY changed from 77 to 76
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 35 to 34
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 34 to 33
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 33 to 32
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 32 to 31
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 31 to 30
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 30 to 29
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 29 to 28
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 28 to 27
-22:34:15 - GROUND VELOCITY changed from 76 to 75
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 27 to 26
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 26 to 25
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 25 to 24
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 24 to 23
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 23 to 22
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 22 to 21
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 21 to 20
-22:34:15 - GROUND VELOCITY changed from 75 to 74
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 20 to 19
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 19 to 18
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 18 to 17
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 17 to 16
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 16 to 15
-22:34:15 - GROUND VELOCITY changed from 74 to 73
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 15 to 14
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 14 to 13
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 13 to 12
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 12 to 11
-22:34:15 - GROUND VELOCITY changed from 73 to 72
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 11 to 10
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 10 to 9
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 9 to 8
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 8 to 7
-22:34:15 - GROUND VELOCITY changed from 72 to 71
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 7 to 6
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 6 to 5
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 5 to 4
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 4 to 3
-22:34:15 - GROUND VELOCITY changed from 71 to 70
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 3 to 2
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 2 to 1
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 1 to 0
-22:34:15 - GROUND VELOCITY changed from 70 to 69
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 0 to 360
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 360 to 359
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 359 to 358
-22:34:15 - GROUND VELOCITY changed from 69 to 68
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 358 to 357
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 357 to 356
-22:34:15 - PLANE HEADING DEGREES TRUE changed from 356 to 355
 22:34:16 - GROUND VELOCITY changed from 68 to 67
 22:34:16 - PLANE HEADING DEGREES TRUE changed from 355 to 354
 22:34:16 - PLANE HEADING DEGREES TRUE changed from 354 to 353
@@ -1798,3 +1748,43 @@
 21:59:14 - SimConnect DataRequest active
 21:59:14 - SimConnect connection established
 21:59:18 - User exit, disposing of connection
+13:05:37 - Initialising DataGridView
+13:05:37 - Initialising DataTable
+13:05:37 - Binding DataTable to DataGridView
+13:05:37 - Checking for required applications
+13:05:37 - Found MatricServer
+13:05:37 - Initialising Matric
+13:05:37 - Matric: Getting Clients
+13:05:37 - Found FlightSimulator
+13:05:37 - Initialising DataRequest
+13:05:37 - SimConnect DataRequest active
+13:05:37 - Will check again for required apps in 60 seconds
+13:05:37 - DataTable exists, will attempt to load XML.
+13:05:37 - DataTable loaded
+13:05:37 - SimConnect connection established
+13:05:37 - SimConnect recieved an error: SIMCONNECT_EXCEPTION_UNRECOGNIZED_ID
+13:05:37 - Initialising DataRequest
+13:05:37 - SimConnect DataRequest active
+13:05:37 - Matric: No connected devices found
+13:05:37 - SimConnect connection established
+13:05:46 - User exit, disposing of connection
+13:06:01 - Initialising DataGridView
+13:06:01 - Initialising DataTable
+13:06:01 - Binding DataTable to DataGridView
+13:06:01 - Checking for required applications
+13:06:01 - Found MatricServer
+13:06:01 - Initialising Matric
+13:06:01 - Matric: Getting Clients
+13:06:02 - Found FlightSimulator
+13:06:02 - Initialising DataRequest
+13:06:02 - SimConnect DataRequest active
+13:06:02 - Will check again for required apps in 60 seconds
+13:06:02 - DataTable exists, will attempt to load XML.
+13:06:02 - DataTable loaded
+13:06:02 - SimConnect connection established
+13:06:02 - SimConnect recieved an error: SIMCONNECT_EXCEPTION_UNRECOGNIZED_ID
+13:06:02 - Initialising DataRequest
+13:06:02 - SimConnect DataRequest active
+13:06:02 - Matric: No connected devices found
+13:06:02 - SimConnect connection established
+13:06:07 - User exit, disposing of connection

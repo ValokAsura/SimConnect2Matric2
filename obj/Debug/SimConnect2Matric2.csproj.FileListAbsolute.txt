@@ -15,3 +15,19 @@ M:\Dropbox\Dropbox\Codey Things\Visual Studio\Projects\SimConnect2Matric2\bin\De
 M:\Dropbox\Dropbox\Codey Things\Visual Studio\Projects\SimConnect2Matric2\bin\Debug\Newtonsoft.Json.dll
 M:\Dropbox\Dropbox\Codey Things\Visual Studio\Projects\SimConnect2Matric2\bin\Debug\Newtonsoft.Json.xml
 M:\Dropbox\Dropbox\Codey Things\Visual Studio\Projects\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.AboutForm.resources
+D:\GitHub\SimConnect2Matric2\bin\Debug\SimConnect2Matric2.exe.config
+D:\GitHub\SimConnect2Matric2\bin\Debug\SimConnect2Matric2.exe
+D:\GitHub\SimConnect2Matric2\bin\Debug\SimConnect2Matric2.pdb
+D:\GitHub\SimConnect2Matric2\bin\Debug\Microsoft.FlightSimulator.SimConnect.dll
+D:\GitHub\SimConnect2Matric2\bin\Debug\Newtonsoft.Json.dll
+D:\GitHub\SimConnect2Matric2\bin\Debug\MatricIntegration.pdb
+D:\GitHub\SimConnect2Matric2\bin\Debug\Newtonsoft.Json.xml
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.csproj.AssemblyReference.cache
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.AboutForm.resources
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.Form1.resources
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.Properties.Resources.resources
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.csproj.GenerateResource.cache
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.csproj.CoreCompileInputs.cache
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConne.474A38E0.Up2Date
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.exe
+D:\GitHub\SimConnect2Matric2\obj\Debug\SimConnect2Matric2.pdb

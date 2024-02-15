@@ -19,21 +19,15 @@
     </xs:element>
   </xs:schema>
   <SimConnectDataTable>
-    <DataItem>PLANE HEADING DEGREES TRUE</DataItem>
-    <DataType>2</DataType>
-    <MatricType>3</MatricType>
-    <Value />
-  </SimConnectDataTable>
-  <SimConnectDataTable>
     <DataItem>TRANSPONDER CODE:1</DataItem>
     <DataType>0</DataType>
     <MatricType>5</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>COM STATUS:1</DataItem>
+    <DataItem>TRANSPONDER STATE:1</DataItem>
     <DataType>0</DataType>
-    <MatricType>0</MatricType>
+    <MatricType>2</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
@@ -49,55 +43,61 @@
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>LIGHT TAXI</DataItem>
+    <DataItem>COM ACTIVE FREQUENCY:2</DataItem>
     <DataType>0</DataType>
-    <MatricType>6</MatricType>
+    <MatricType>4</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>LIGHT NAV</DataItem>
+    <DataItem>COM STANDBY FREQUENCY:2</DataItem>
     <DataType>0</DataType>
-    <MatricType>6</MatricType>
+    <MatricType>4</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>LIGHT BEACON</DataItem>
+    <DataItem>NAV ACTIVE FREQUENCY:1</DataItem>
     <DataType>0</DataType>
-    <MatricType>6</MatricType>
+    <MatricType>4</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>AUTOPILOT VERTICAL HOLD VAR</DataItem>
+    <DataItem>NAV STANDBY FREQUENCY:1</DataItem>
     <DataType>0</DataType>
-    <MatricType>0</MatricType>
+    <MatricType>4</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>GROUND VELOCITY</DataItem>
+    <DataItem>NAV ACTIVE FREQUENCY:2</DataItem>
     <DataType>0</DataType>
-    <MatricType>0</MatricType>
+    <MatricType>4</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>KOHLSMAN SETTING STD:1</DataItem>
+    <DataItem>NAV STANDBY FREQUENCY:2</DataItem>
     <DataType>0</DataType>
-    <MatricType>0</MatricType>
-    <Value />
-  </SimConnectDataTable>
-  <SimConnectDataTable>
-    <DataItem>AUTOPILOT HEADING LOCK DIR</DataItem>
-    <DataType>0</DataType>
-    <MatricType>0</MatricType>
-    <Value />
-  </SimConnectDataTable>
-  <SimConnectDataTable>
-    <DataItem>AUTOPILOT ALTITUDE LOCK VAR</DataItem>
-    <DataType>0</DataType>
-    <MatricType>0</MatricType>
+    <MatricType>4</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
     <DataItem>NAV OBS:1</DataItem>
+    <DataType>3</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>NAV OBS:2</DataItem>
+    <DataType>3</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>NAV TOFROM:1</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>NAV TOFROM:2</DataItem>
     <DataType>0</DataType>
     <MatricType>0</MatricType>
     <Value />
@@ -105,13 +105,85 @@
   <SimConnectDataTable>
     <DataItem>AUTOPILOT VERTICAL HOLD VAR</DataItem>
     <DataType>1</DataType>
+    <MatricType>1</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>AUTOPILOT ALTITUDE LOCK VAR</DataItem>
+    <DataType>1</DataType>
     <MatricType>0</MatricType>
     <Value />
   </SimConnectDataTable>
   <SimConnectDataTable>
-    <DataItem>TRANSPONDER STATE:1</DataItem>
+    <DataItem>AUTOPILOT HEADING LOCK DIR</DataItem>
+    <DataType>3</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>AUTOPILOT HEADING LOCK</DataItem>
+    <DataType>3</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>LIGHT BEACON</DataItem>
     <DataType>0</DataType>
     <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>LIGHT LANDING</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>LIGHT NAV</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>LIGHT STROBE</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>LIGHT TAXI</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>LIGHT PANEL</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>LIGHT ON STATES</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>BRAKE PARKING POSITION</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>PITOT HEAT</DataItem>
+    <DataType>0</DataType>
+    <MatricType>0</MatricType>
+    <Value />
+  </SimConnectDataTable>
+  <SimConnectDataTable>
+    <DataItem>RECIP MIXTURE RATIO:1</DataItem>
+    <DataType>4</DataType>
+    <MatricType>6</MatricType>
     <Value />
   </SimConnectDataTable>
 </NewDataSet>
