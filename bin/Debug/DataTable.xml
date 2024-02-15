@@ -182,8 +182,8 @@
   </SimConnectDataTable>
   <SimConnectDataTable>
     <DataItem>RECIP MIXTURE RATIO:1</DataItem>
-    <DataType>4</DataType>
-    <MatricType>6</MatricType>
+    <DataType>0</DataType>
+    <MatricType>1</MatricType>
     <Value />
   </SimConnectDataTable>
 </NewDataSet>

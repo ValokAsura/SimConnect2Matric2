@@ -170,7 +170,22 @@ namespace SimConnect2Matric2
         private bool CheckingForApps = false;
 
         //define which SimVars need to be handled uniquely.
-        public string[] uniqueFormats = { "AUTOPILOT VERTICAL HOLD VAR", "TRANSPONDER STATE"};
+        public string[] uniqueFormats = {"AUTOPILOT VERTICAL HOLD VAR"};
+        public string[] enumFormats = {
+            "AI ANTISTALL STATE",           "AUTOPILOT DEFAULT PITCH MODE",     "AUTOPILOT DEFAULT ROLL MODE",          "BLEED AIR SOURCE CONTROL",     "CAMERA REQUEST ACTION",
+            "CAMERA STATE",                 "CAMERA SUBSTATE",                  "CAMERA VIEW TYPE AND INDEX",           "CHASE CAMERA HEADLOOK",        "COCKPIT CAMERA HEADLOOK",
+            "COM SPACING MODE",             "COM STATUS",                       "COPILOT TRANSMITTER TYPE",             "CRASH FLAG",                   "CRASH SEQUENCE",
+            "DRONE CAMERA FOCUS MODE",      "ENGINE TYPE",                      "FLY ASSISTANT NEAREST CATEGORY",       "FUEL CROSS FEED",              "FUEL SELECTED TRANSFER MODE",
+            "FUEL TANK SELECTOR",           "G LIMITER SETTING",                "GAMEPLAY CAMERA FOCUS",                "GEAR POSITION",                "GEAR WARNING",
+            "GPS APPROACH APPROACH TYPE",   "GPS APPROACH MODE",                "GPS APPROACH SEGMENT TYPE",            "GPS APPROACH WP TYPE",         "HAND ANIM STATE",
+            "HSI TF FLAGS",                 "INTERACTIVE POINT TYPE",           "INTERCOM MODE",                        "MARKER BEACON STATE",          "NAV TOFROM",
+            "PARTIAL PANEL ADF",            "PARTIAL PANEL AIRSPEED",           "PARTIAL PANEL ALTIMETER",              "PARTIAL PANEL ATTITUDE",       "PARTIAL PANEL AVIONICS",
+            "PARTIAL PANEL COMM",           "PARTIAL PANEL COMPASS",            "PARTIAL PANEL ELECTRICAL",             "PARTIAL PANEL ENGINE",         "PARTIAL PANEL FUEL INDICATOR",
+            "PARTIAL PANEL HEADING",        "PARTIAL PANEL NAV",                "PARTIAL PANEL PITOT",                  "PARTIAL PANEL TRANSPONDER",    "PARTIAL PANEL TURN COORDINATOR",
+            "PARTIAL PANEL VACUUM",         "PARTIAL PANEL VERTICAL VELOCITY",  "PILOT TRANSMITTER TYPE",               "PITOT HEAT SWITCH",            "PUSHBACK STATE",
+            "RECIP ENG FUEL TANK SELECTOR", "RETRACT FLOAT SWITCH",             "SMART CAMERA LIST",                    "SURFACE CONDITION",            "SURFACE TYPE",
+            "TACAN STATION TOFROM",         "TRANSPONDER STATE",                "TURB ENG CONDITION LEVER POSITION",    "TURB ENG IGNITION SWITCH EX1", "TURB ENG TANK SELECTOR"
+        };
 
         static Matric.Integration.Matric matric;
 
@@ -931,7 +946,11 @@ namespace SimConnect2Matric2
         string FormatData(object input, DataRow tableRow)
         {
             string rowDataItem = tableRow["DataItem"].ToString();
-            string formatType = uniqueFormats.Any(format => rowDataItem.Contains(format)) ? "unique" : EnumToString(Convert.ToInt32(tableRow["MatricType"]), typeof(MatricDataTypes));
+            string formatType = "";
+            string output = "";
+
+            formatType = uniqueFormats.Any(format => rowDataItem.Contains(format)) ? "unique" : EnumToString(Convert.ToInt32(tableRow["MatricType"]), typeof(MatricDataTypes));
+            formatType = enumFormats.Any(format => rowDataItem.Contains(format)) ? "enum" : EnumToString(Convert.ToInt32(tableRow["MatricType"]), typeof(MatricDataTypes));
 
             switch (formatType)
             {
@@ -948,33 +967,159 @@ namespace SimConnect2Matric2
                 case "button":
                     return Math.Round(Convert.ToDouble(input)) == 1 ? "true" : "false";
                 case "unique":
-                    string output = "";
-
                     switch (rowDataItem)
                     {
                         case "AUTOPILOT VERTICAL HOLD VAR":
                             return Convert.ToString(Math.Round(Convert.ToDouble(input) / 1.66) * 100);
-                        case string s when s.Contains("TRANSPONDER STATE"):
-                            return EnumToString(input, typeof(TransponderState));
-                        case string s when s.Contains("NAV TOFROM"):
-                            return EnumToString(input, typeof(NavToFrom));
+                    }
+
+                    return "ReqUnique";
+                case "enum":
+                    switch (rowDataItem)
+                    {
+                        case string s when s.Contains("AI ANTISTALL STATE"):
+                            return EnumToString(input, typeof(AiAntistallState));
+                        case string s when s.Contains("AUTOPILOT DEFAULT PITCH MODE"):
+                            return EnumToString(input, typeof(AutopilotDefaultPitchMode));
+                        case string s when s.Contains("AUTOPILOT DEFAULT ROLL MODE"):
+                            return EnumToString(input, typeof(AutopilotDefaultRollMode));
+                        case string s when s.Contains("BLEED AIR SOURCE CONTROL"):
+                            return EnumToString(input, typeof(BleedAirSourceControl));
+                        case string s when s.Contains("CAMERA REQUEST ACTION"):
+                            return EnumToString(input, typeof(CameraRequestAction));
+                        case string s when s.Contains("CAMERA STATE"):
+                            return EnumToString(input, typeof(CameraState));
+                        case string s when s.Contains("CAMERA SUBSTATE"):
+                            return EnumToString(input, typeof(CameraSubstate));
+                        case string s when s.Contains("CAMERA VIEW TYPE AND INDEX"):
+                            return EnumToString(input, typeof(CameraViewTypeAndIndex));
+                        case string s when s.Contains("CHASE CAMERA HEADLOOK"):
+                            return EnumToString(input, typeof(ChaseCameraHeadlook));
+                        case string s when s.Contains("COCKPIT CAMERA HEADLOOK"):
+                            return EnumToString(input, typeof(CockpitCameraHeadlook));
                         case string s when s.Contains("COM SPACING MODE"):
                             output = EnumToString(input, typeof(ComSpacingMode));
                             return output == "TwentyFiveKilohertz" ? "25kHz" : "8.33kHz";
+                        case string s when s.Contains("COM STATUS"):
+                            return EnumToString(input, typeof(ComStatus));
+                        case string s when s.Contains("COPILOT TRANSMITTER TYPE"):
+                            return EnumToString(input, typeof(CopilotTransmitterType));
                         case string s when s.Contains("CRASH FLAG"):
                             output = EnumToString(input, typeof(CrashFlag));
                             return output == "Building2" ? "Building" : output;
+                        case string s when s.Contains("CRASH SEQUENCE"):
+                            return EnumToString(input, typeof(CrashSequence));
+                        case string s when s.Contains("DRONE CAMERA FOCUS MODE"):
+                            return EnumToString(input, typeof(DroneCameraFocusMode));
+                        case string s when s.Contains("ENGINE TYPE"):
+                            return EnumToString(input, typeof(EngineType));
+                        case string s when s.Contains("FLY ASSISTANT NEAREST CATEGORY"):
+                            return EnumToString(input, typeof(FlyAssistantNearestCategory));
+                        case string s when s.Contains("FUEL CROSS FEED"):
+                            return EnumToString(input, typeof(FuelCrossFeed));
+                        case string s when s.Contains("FUEL SELECTED TRANSFER MODE"):
+                            return EnumToString(input, typeof(FuelSelectedTransferMode));
+                        case string s when s.Contains("FUEL TANK SELECTOR"):
+                            return EnumToString(input, typeof(FuelTankSelector));
+                        case string s when s.Contains("G LIMITER SETTING"):
+                            return EnumToString(input, typeof(GLimiterSetting));
+                        case string s when s.Contains("GAMEPLAY CAMERA FOCUS"):
+                            return EnumToString(input, typeof(GameplayCameraFocus));
+                        case string s when s.Contains("GEAR POSITION"):
+                            return EnumToString(input, typeof(GearPosition));
+                        case string s when s.Contains("GEAR WARNING"):
+                            return EnumToString(input, typeof(GearWarning));
                         case string s when s.Contains("GPS APPROACH APPROACH TYPE"):
                             output = EnumToString(input, typeof(GpsApproachApproachType));
                             output = output == "VOR_DME" ? "VOR/DME" : output;
                             output = output == "NDB_DME" ? "NDB/DME" : output;
                             return output;
+                        case string s when s.Contains("GPS APPROACH MODE"):
+                            return EnumToString(input, typeof(GpsApproachMode));
+                        case string s when s.Contains("GPS APPROACH SEGMENT TYPE"):
+                            return EnumToString(input, typeof(GpsApproachSegmentType));
+                        case string s when s.Contains("GPS APPROACH WP TYPE"):
+                            return EnumToString(input, typeof(GpsApproachWpType));
+                        case string s when s.Contains("HAND ANIM STATE"):
+                            return EnumToString(input, typeof(HandAnimState));
+                        case string s when s.Contains("HSI TF FLAGS"):
+                            return EnumToString(input, typeof(HsiTfFlags));
+                        case string s when s.Contains("INTERACTIVE POINT TYPE"):
+                            return EnumToString(input, typeof(InteractivePointType));
+                        case string s when s.Contains("INTERCOM MODE"):
+                            return EnumToString(input, typeof(IntercomMode));
+                        case string s when s.Contains("MARKER BEACON STATE"):
+                            return EnumToString(input, typeof(MarkerBeaconState));
+                        case string s when s.Contains("NAV TOFROM"):
+                            return EnumToString(input, typeof(NavToFrom));
+                        case string s when s.Contains("PARTIAL PANEL ADF"):
+                            return EnumToString(input, typeof(PartialPanelAdf));
+                        case string s when s.Contains("PARTIAL PANEL AIRSPEED"):
+                            return EnumToString(input, typeof(PartialPanelAirspeed));
+                        case string s when s.Contains("PARTIAL PANEL ALTIMETER"):
+                            return EnumToString(input, typeof(PartialPanelAltimeter));
+                        case string s when s.Contains("PARTIAL PANEL ATTITUDE"):
+                            return EnumToString(input, typeof(PartialPanelAttitude));
+                        case string s when s.Contains("PARTIAL PANEL AVIONICS"):
+                            return EnumToString(input, typeof(PartialPanelAvionics));
+                        case string s when s.Contains("PARTIAL PANEL COMM"):
+                            return EnumToString(input, typeof(PartialPanelComm));
+                        case string s when s.Contains("PARTIAL PANEL COMPASS"):
+                            return EnumToString(input, typeof(PartialPanelCompass));
+                        case string s when s.Contains("PARTIAL PANEL ELECTRICAL"):
+                            return EnumToString(input, typeof(PartialPanelElectrical));
+                        case string s when s.Contains("PARTIAL PANEL ENGINE"):
+                            return EnumToString(input, typeof(PartialPanelEngine));
+                        case string s when s.Contains("PARTIAL PANEL FUEL INDICATOR"):
+                            return EnumToString(input, typeof(PartialPanelFuelIndicator));
+                        case string s when s.Contains("PARTIAL PANEL HEADING"):
+                            return EnumToString(input, typeof(PartialPanelHeading));
+                        case string s when s.Contains("PARTIAL PANEL NAV"):
+                            return EnumToString(input, typeof(PartialPanelNav));
+                        case string s when s.Contains("PARTIAL PANEL PITOT"):
+                            return EnumToString(input, typeof(PartialPanelPitot));
+                        case string s when s.Contains("PARTIAL PANEL TRANSPONDER"):
+                            return EnumToString(input, typeof(PartialPanelTransponder));
+                        case string s when s.Contains("PARTIAL PANEL TURN COORDINATOR"):
+                            return EnumToString(input, typeof(PartialPanelTurnCoordinator));
+                        case string s when s.Contains("PARTIAL PANEL VACUUM"):
+                            return EnumToString(input, typeof(PartialPanelVacuum));
+                        case string s when s.Contains("PARTIAL PANEL VERTICAL VELOCITY"):
+                            return EnumToString(input, typeof(PartialPanelVerticalVelocity));
+                        case string s when s.Contains("PILOT TRANSMITTER TYPE"):
+                            return EnumToString(input, typeof(PilotTransmitterType));
+                        case string s when s.Contains("PITOT HEAT SWITCH"):
+                            return EnumToString(input, typeof(PitotHeatSwitch));
+                        case string s when s.Contains("PUSHBACK STATE"):
+                            return EnumToString(input, typeof(PushbackState));
+                        case string s when s.Contains("RECIP ENG FUEL TANK SELECTOR"):
+                            return EnumToString(input, typeof(RecipEngFuelTankSelector));
+                        case string s when s.Contains("RETRACT FLOAT SWITCH"):
+                            return EnumToString(input, typeof(RetractFloatSwitch));
+                        case string s when s.Contains("SMART CAMERA LIST"):
+                            return EnumToString(input, typeof(SmartCameraList));
+                        case string s when s.Contains("SURFACE CONDITION"):
+                            return EnumToString(input, typeof(SurfaceCondition));
+                        case string s when s.Contains("SURFACE TYPE"):
+                            return EnumToString(input, typeof(SurfaceType));
+                        case string s when s.Contains("TACAN STATION TOFROM"):
+                            return EnumToString(input, typeof(TacanStationTofrom));
+                        case string s when s.Contains("TRANSPONDER STATE"):
+                            return EnumToString(input, typeof(TransponderState));
+                        case string s when s.Contains("TURB ENG CONDITION LEVER POSITION"):
+                            return EnumToString(input, typeof(TurbEngConditionLeverPosition));
+                        case string s when s.Contains("TURB ENG IGNITION SWITCH EX1"):
+                            return EnumToString(input, typeof(TurbEngIgnitionSwitchEx1));
+                        case string s when s.Contains("TURB ENG TANK SELECTOR"):
+                            return EnumToString(input, typeof(TurbEngTankSelector));
+
+
                     }
 
-                    return "ReqUnique";
+                    return "ReqEnum";
             }
 
-            return "";
+            return "err?";
         }
 
         static double Deg2rad(double deg)
